@@ -25,7 +25,7 @@ model User {
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  stripeId  String
+  stripeId  String?
   billings  Billings?
   campaign Campaign[]
   domain Domain []

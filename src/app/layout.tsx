@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={clerkPublicKey}>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <header className="flex justify-end items-center p-4 gap-4 h-16">
             <SignedOut>
               <SignInButton />
@@ -48,7 +48,9 @@ export default function RootLayout({
               <UserButton />
             </SignedIn>
           </header>
-          {children}
+          <main className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>
