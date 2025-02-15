@@ -21,8 +21,9 @@ enum Role {
 model User {
   id        String   @id @default(uuid()) //PK
   fullname  String
-  clerkId   String
+  clerkId   String @unique
   type      String
+  email     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   stripeId  String?

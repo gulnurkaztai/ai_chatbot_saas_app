@@ -15,6 +15,7 @@ const clerkPublicKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 if (!clerkPublicKey) {
   throw new Error("missing key");
 }
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider publishableKey={clerkPublicKey}>
+    <ClerkProvider publishableKey={clerkPublicKey}  >
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <header className="flex justify-end items-center p-4 gap-4 h-16">
