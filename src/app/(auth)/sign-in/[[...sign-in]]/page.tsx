@@ -1,12 +1,24 @@
+"use client"
 
-import { SignIn } from "@clerk/nextjs"
+import { SignIn, useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SignInPage() {
+  const {isSignedIn} = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    if(isSignedIn){
+      router.push("/dashboard");
+    }
+  });
 
+  if(isSignedIn) return null;
   return (
+    
     <div>
-      <SignIn routing="path" signUpUrl="/sign-up" redirectUrl="/dashboard"/>
+      <SignIn />
     </div>
     
   )

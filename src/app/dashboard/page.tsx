@@ -1,8 +1,24 @@
 'use client'
 
-import { UserButton } from "@clerk/nextjs"
+import { useAuth, UserButton } from "@clerk/nextjs"
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 
 export default function DashboardPage() {
+
+  const {isSignedIn} = useAuth();
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(!isSignedIn){
+      router.push("/auth/sign-in");
+    }
+  });
+
+  if(!isSignedIn) return null;
+
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="border-b bg-white p-4">

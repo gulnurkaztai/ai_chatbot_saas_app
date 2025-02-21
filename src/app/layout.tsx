@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider publishableKey={clerkPublicKey}  >
+    <ClerkProvider publishableKey={clerkPublicKey}>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <header className="flex justify-end items-center p-4 gap-4 h-16">
