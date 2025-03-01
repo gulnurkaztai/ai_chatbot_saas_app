@@ -12,6 +12,8 @@ import "./globals.css";
 import "dotenv/config"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/mode-toggle"
+import {Toaster} from "sonner"
+
 const clerkPublicKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 if (!clerkPublicKey) {
   throw new Error("missing key");
@@ -61,6 +63,7 @@ export default function RootLayout({
           <main className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
             {children}
           </main>
+          <Toaster/>
           </ThemeProvider>
         </body>
       </html>

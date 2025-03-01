@@ -4,8 +4,9 @@ import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddDomainSchema } from "@/schemas/settings.schema"; // TODO: Define this schema
 import { UploadClient } from "@uploadcare/upload-client";
-import { onIntegrateDomain } from "@/actions/settings";
-import { useToast } from "@/hooks/use-toast";
+// import { onIntegrateDomain } from "@/actions/settings";
+import { useSonner } from 'sonner'
+
 
 const upload = new UploadClient({
   publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string
@@ -17,7 +18,7 @@ export const useDomain = () => {
   });
 
   const pathname = usePathname();
-  const { toast } = useToast();
+  const  toast  = useSonner();
   const [loading, setLoading] = useState<boolean>(false);
   const [isDomain, setIsDomain] = useState<string | undefined>(undefined);
   const router = useRouter();

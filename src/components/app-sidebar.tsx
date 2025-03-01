@@ -35,7 +35,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
   } from "@/components/ui/collapsible"
-  
+import { useDomain } from "@/hooks/use-domain";
 import {CustomTrigger}  from "@/components/custom-trigger";
 const items = [
   {
@@ -80,7 +80,12 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+type Props = {
+  min?: boolean;
+  domains: { id: string; name: string; icon: string | null }[] | null | undefined;
+};
+
+export function AppSidebar({ domains, min }: Props) {
   const {
     state,
     open,
@@ -90,7 +95,7 @@ export function AppSidebar() {
     isMobile,
     toggleSidebar,
   } = useSidebar();
-
+  const { register, onAddDomain, loading, errors, isDomain } = useDomain();
   return (
     <div className="flex">
       <SidebarProvider open={open} onOpenChange={setOpen}>
@@ -150,7 +155,7 @@ export function AppSidebar() {
   <SidebarGroup>
       <SidebarGroupLabel>DOMAINS</SidebarGroupLabel>
       <SidebarGroupAction title="Add Domain">
-        <Plus /> <span className="sr-only">Add Domain</span>
+        <Plus className="cursor-pointer" size={25} onClick={() => {/* TODO: Open modal */}} /> 
       </SidebarGroupAction>
       <SidebarGroupContent />
     </SidebarGroup>
