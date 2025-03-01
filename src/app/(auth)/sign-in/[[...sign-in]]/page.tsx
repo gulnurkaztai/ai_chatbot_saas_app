@@ -1,26 +1,13 @@
-"use client"
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation"; 
+import SignInClient from "./sign-in-client"; 
 
-import { SignIn, useAuth } from "@clerk/nextjs"
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+export default async function SignInPage() {
+  const { userId } = await auth(); 
 
-export default function SignInPage() {
-  const {isSignedIn} = useAuth();
-  const router = useRouter();
+  if (userId) {
+    return redirect("/dashboard"); 
+  }
 
-  useEffect(() => {
-    if(isSignedIn){
-      router.push("/dashboard");
-    }
-  });
-
-  if(isSignedIn) return null;
-  return (
-    
-    <div>
-      <SignIn />
-    </div>
-    
-  )
+  return <SignInClient />;
 }
-
