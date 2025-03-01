@@ -10,7 +10,8 @@ import {
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "dotenv/config"
-
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from "@/components/mode-toggle"
 const clerkPublicKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 if (!clerkPublicKey) {
   throw new Error("missing key");
@@ -38,9 +39,17 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider publishableKey={clerkPublicKey}>
-      <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased vsc-initialized`} >
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
         <header className="flex justify-end items-center p-4 gap-4 h-16">
+        <ModeToggle />
             <SignedOut>
               <SignInButton />
               <SignUpButton />
@@ -52,8 +61,12 @@ export default function RootLayout({
           <main className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
             {children}
           </main>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
   );
 }
+
+
+
