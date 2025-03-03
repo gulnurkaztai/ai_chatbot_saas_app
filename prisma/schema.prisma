@@ -27,14 +27,14 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   stripeId  String?
-  billings  Billings?
+  billings  Billings[]
   campaign Campaign[]
   domain Domain []
 }
 
 model Billings {
   id       String @id @default(uuid()) //PK
-  plan     String
+  plan     Plans
   credits  Int
   userId   String @unique //FK
   user     User   @relation(fields: [userId], references: [id])

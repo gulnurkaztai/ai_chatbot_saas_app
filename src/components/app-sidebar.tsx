@@ -31,12 +31,22 @@ import {
   SidebarGroupAction,
 } from "@/components/ui/sidebar";
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-  } from "@/components/ui/collapsible"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { useDomain } from "@/hooks/use-domain";
-import {CustomTrigger}  from "@/components/custom-trigger";
+import { CustomTrigger } from "@/components/custom-trigger";
+import { useState } from "react";
 const items = [
   {
     title: "Dashboard",
@@ -68,21 +78,24 @@ const items = [
     url: "#",
     icon: Settings,
     subItems: [
-        {
-            title: "Account",
-            url: "/settings/account",
-          },
-          {
-            title: "Preferences",
-            url: "/settings/preferences",
-          },
-    ]
+      {
+        title: "Account",
+        url: "/settings/account",
+      },
+      {
+        title: "Preferences",
+        url: "/settings/preferences",
+      },
+    ],
   },
 ];
 
 type Props = {
   min?: boolean;
-  domains: { id: string; name: string; icon: string | null }[] | null | undefined;
+  domains:
+    | { id: string; name: string; icon: string | null }[]
+    | null
+    | undefined;
 };
 
 export function AppSidebar({ domains, min }: Props) {
@@ -96,6 +109,15 @@ export function AppSidebar({ domains, min }: Props) {
     toggleSidebar,
   } = useSidebar();
   const { register, onAddDomain, loading, errors, isDomain } = useDomain();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
     <div className="flex">
       <SidebarProvider open={open} onOpenChange={setOpen}>
@@ -114,53 +136,69 @@ export function AppSidebar({ domains, min }: Props) {
           </SidebarHeader>
 
           <SidebarContent>
-  <SidebarGroup>
-    <SidebarGroupLabel>MENU</SidebarGroupLabel>
-    <SidebarGroupContent>
-      <SidebarMenu>
-        {items.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            {item.subItems ? (
-              <Collapsible className="w-full">
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton className="w-full">
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.title}</span>
-                    <ChevronLeft className="ml-auto h-4 w-4  transition-transform group-data-[state=open]:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    {item.subItems.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <a href={subItem.url}>{subItem.title}</a>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </Collapsible>
-            ) : (
-              <SidebarMenuButton asChild>
-                <a href={item.url} className="flex items-center gap-2">
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
-            )}
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
-  <SidebarGroup>
-      <SidebarGroupLabel>DOMAINS</SidebarGroupLabel>
-      <SidebarGroupAction title="Add Domain">
-        <Plus className="cursor-pointer" size={25} onClick={() => {/* TODO: Open modal */}} /> 
-      </SidebarGroupAction>
-      <SidebarGroupContent />
-    </SidebarGroup>
-</SidebarContent>
-
+            <SidebarGroup>
+              <SidebarGroupLabel>MENU</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {items.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      {item.subItems ? (
+                        <Collapsible className="w-full">
+                          <CollapsibleTrigger asChild>
+                            <SidebarMenuButton className="w-full">
+                              <item.icon className="h-4 w-4" />
+                              <span>{item.title}</span>
+                              <ChevronLeft className="ml-auto h-4 w-4  transition-transform group-data-[state=open]:rotate-90" />
+                            </SidebarMenuButton>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            <SidebarMenuSub>
+                              {item.subItems.map((subItem) => (
+                                <SidebarMenuSubItem key={subItem.title}>
+                                  <a href={subItem.url}>{subItem.title}</a>
+                                </SidebarMenuSubItem>
+                              ))}
+                            </SidebarMenuSub>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      ) : (
+                        <SidebarMenuButton asChild>
+                          <a
+                            href={item.url}
+                            className="flex items-center gap-2"
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.title}</span>
+                          </a>
+                        </SidebarMenuButton>
+                      )}
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+            <SidebarGroup>
+              <SidebarGroupLabel>DOMAINS</SidebarGroupLabel>
+              <SidebarGroupAction title="Add Domain">
+                <Dialog>
+                  <DialogTrigger>
+                    <Plus className="cursor-pointer text-ironside" size={25} onClick={() => handleOpenDialog} />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                      <DialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </SidebarGroupAction>
+              <SidebarGroupContent />
+            </SidebarGroup>
+          </SidebarContent>
 
           <SidebarFooter>
             <SignOutButton>
